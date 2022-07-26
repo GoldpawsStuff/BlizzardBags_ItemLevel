@@ -123,6 +123,7 @@ local Update = function(self, bag, slot)
 		local container = Cache[self]
 		if (not container) then
 			container = CreateFrame("Frame", nil, self)
+			container:SetFrameLevel(self:GetFrameLevel() + 5)
 			container:SetAllPoints()
 			Cache[self] = container
 		end
@@ -164,16 +165,16 @@ end
 local UpdateContainer = function(self)
 	local bag = self:GetID() -- reduce number of calls
 	local name = self:GetName()
-	local button
-	for i = 1,self.size do
-		button = _G[name.."Item"..i]
-		if (button) then
-			if (button.hasItem) then
-				Update(button, bag)
-			else
-				Clear(button)
-			end
+	local id = 1
+	local button = _G[name.."Item"..i]
+	while (button) do
+		if (button.hasItem) then
+			Update(button, bag)
+		else
+			Clear(button)
 		end
+		id = id + 1
+		button = _G[name.."Item"..i]
 	end
 end
 
