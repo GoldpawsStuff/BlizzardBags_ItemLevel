@@ -165,7 +165,7 @@ local UpdateContainer = function(self)
 	local bag = self:GetID() -- reduce number of calls
 	local name = self:GetName()
 	local button
-	for i = 1,container.size do
+	for i = 1,self.size do
 		button = _G[name.."Item"..i]
 		if (button) then
 			if (button.hasItem) then
