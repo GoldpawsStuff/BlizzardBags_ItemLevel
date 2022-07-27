@@ -177,7 +177,7 @@ local UpdateContainer = function(self)
 	end
 	local items, empty = 0,0
 	local id = 1
-	local button = _G[name.."Item"..i]
+	local button = _G[name.."Item"..id]
 	while (button) do
 		if (button.hasItem) then
 			items = items + 1
@@ -187,7 +187,7 @@ local UpdateContainer = function(self)
 			Clear(button)
 		end
 		id = id + 1
-		button = _G[name.."Item"..i]
+		button = _G[name.."Item"..id]
 	end
 	if (DEBUG) then
 		Private:Print("...items:", items)
@@ -206,8 +206,8 @@ local UpdateBank = function()
 	local BankSlotsFrame = BankSlotsFrame
 	local bag = BankSlotsFrame:GetID()
 	local items, empty, other = 0,0,0
-	for i = 1, NUM_BANKGENERIC_SLOTS do
-		local button = BankSlotsFrame["Item"..i]
+	for id = 1, NUM_BANKGENERIC_SLOTS do
+		local button = BankSlotsFrame["Item"..id]
 		if (button and not button.isBag) then
 			if (button.hasItem) then
 				item = item + 1
