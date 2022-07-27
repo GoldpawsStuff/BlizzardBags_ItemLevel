@@ -25,7 +25,7 @@
 --]]
 -- Retrive addon folder name, and our local, private namespace.
 local Addon, Private = ...
-local DEBUG = true
+local DEBUG = false
 
 -- Lua API
 local _G = _G
@@ -112,8 +112,13 @@ local Update = function(self, bag, slot)
 				end
 			end
 
-			message = tipLevel or GetDetailedItemLevelInfo(itemLink) or itemLevel
-			rarity = itemQuality
+			-- Set a threshold to avoid spamming the classics with ilvl 1 whities
+			tipLevel = tonumber(tipLevel or GetDetailedItemLevelInfo(itemLink) or itemLevel)
+			if (tipLevel and tipLevel > 1) then
+				message = tipLevel
+				rarity = itemQuality
+			end
+
 		else
 			if (DEBUG) then
 				Private:Print("..."..bag..","..slot..": No gear in slot")
