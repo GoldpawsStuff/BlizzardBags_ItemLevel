@@ -249,6 +249,19 @@ end
 -- @input event <string> The name of the event that fired.
 -- @input ... <misc> Any payloads passed by the event handlers.
 Private.OnEvent = function(self, event, ...)
+	if (event == "PLAYERBANKSLOTS_CHANGED") then
+		local slot = ...
+		if (slot <= NUM_BANKGENERIC_SLOTS) then
+			local button = BankSlotsFrame["Item"..slot]
+			if (button and not button.isBag) then
+				if (button.hasItem) then
+					Update(button, BankSlotsFrame:GetID(), button:GetID())
+				else
+					Clear(button)
+				end
+			end
+		end
+	end
 end
 
 -- Initialization.
@@ -293,6 +306,7 @@ Private.OnEnable = function(self)
 	else
 		hooksecurefunc("ContainerFrame_Update", UpdateContainer)
 		hooksecurefunc("BankFrame_UpdateItems", UpdateBank)
+		self:RegisterEvent("PLAYERBANKSLOTS_CHANGED") -- for single item changes
 	end
 end
 
