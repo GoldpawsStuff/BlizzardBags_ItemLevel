@@ -3,4 +3,4 @@
 [![discord](https://www.goldpawsstuff.com/shared/img/common/dd-button.png)](https://discord.gg/MUSfWXd)
 [![twitter](https://www.goldpawsstuff.com/shared/img/common/tw-button.png)](https://twitter.com/GoldpawsStuff)
 
-Shows item levels on equippable gear in the default blizzard bags.
+Shows item levels on gear found in the default blizzard bags and bank.
