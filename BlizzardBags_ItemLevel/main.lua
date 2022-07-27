@@ -94,7 +94,7 @@ local Update = function(self, bag, slot)
 			Scanner.owner = self
 			Scanner.bag = bag
 			Scanner.slot = slot
-			Scanner:SetOwner(button, "ANCHOR_NONE")
+			Scanner:SetOwner(self, "ANCHOR_NONE")
 			Scanner:SetBagItem(bag,slot)
 
 			local tipLevel
