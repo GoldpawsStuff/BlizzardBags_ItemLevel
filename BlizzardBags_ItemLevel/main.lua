@@ -254,11 +254,9 @@ Private.OnEvent = function(self, event, ...)
 		if (slot <= NUM_BANKGENERIC_SLOTS) then
 			local button = BankSlotsFrame["Item"..slot]
 			if (button and not button.isBag) then
-				if (button.hasItem) then
-					Update(button, BankSlotsFrame:GetID(), button:GetID())
-				else
-					Clear(button)
-				end
+				-- Always run a full update here,
+				-- as the .hasItem flag might not have been set yet.
+				Update(button, BankSlotsFrame:GetID(), button:GetID())
 			end
 		end
 	end
