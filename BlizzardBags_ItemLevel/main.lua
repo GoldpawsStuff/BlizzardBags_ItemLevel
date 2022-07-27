@@ -223,7 +223,7 @@ local UpdateBank = function()
 		local button = BankSlotsFrame["Item"..id]
 		if (button and not button.isBag) then
 			if (button.hasItem) then
-				item = item + 1
+				items = items + 1
 				Update(button, bag, button:GetID())
 			else
 				empty = empty + 1
