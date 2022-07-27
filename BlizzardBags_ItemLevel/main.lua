@@ -79,17 +79,17 @@ local colors = {
 -----------------------------------------------------------
 -- Update an itembutton's itemlevel
 local Update = function(self, bag, slot)
-	bag = bag or self:GetParent():GetID()
-	slot = slot or self:GetID()
+	--bag = bag or self:GetParent():GetID()
+	--slot = slot or self:GetID()
 
 	local message, rarity
 	local r, g, b = 240/255, 240/255, 240/255
-	local _, _, _, _, _, _, itemLink, _, _, _ = self.hasItem and GetContainerItemInfo(bag,slot)
 
+	local _, _, _, _, _, _, itemLink = GetContainerItemInfo(bag,slot)
 	if (itemLink) then
+		local _, _, itemQuality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
 
-		local _, _, itemRarity, itemLevel, _, _, _, _, equipLoc = GetItemInfo(itemLink)
-		if (itemRarity and itemRarity > 0 and equipLoc and _G[equipLoc]) then
+		if (itemQuality and itemQuality > 0 and itemEquipLoc and _G[itemEquipLoc]) then
 
 			Scanner.owner = self
 			Scanner.bag = bag
@@ -113,7 +113,15 @@ local Update = function(self, bag, slot)
 			end
 
 			message = tipLevel or GetDetailedItemLevelInfo(itemLink) or itemLevel
-			rarity = itemRarity
+			rarity = itemQuality
+		else
+			if (DEBUG) then
+				Private:Print("..."..bag..","..slot..": No gear in slot")
+			end
+		end
+	else
+		if (DEBUG) then
+			Private:Print("..."..bag..","..slot..": No Link (empty)")
 		end
 	end
 
@@ -181,7 +189,7 @@ local UpdateContainer = function(self)
 	while (button) do
 		if (button.hasItem) then
 			items = items + 1
-			Update(button, bag)
+			Update(button, bag, button:GetID())
 		else
 			empty = empty + 1
 			Clear(button)
@@ -211,7 +219,7 @@ local UpdateBank = function()
 		if (button and not button.isBag) then
 			if (button.hasItem) then
 				item = item + 1
-				Update(button, bag)
+				Update(button, bag, button:GetID())
 			else
 				empty = empty + 1
 				Clear(button)
