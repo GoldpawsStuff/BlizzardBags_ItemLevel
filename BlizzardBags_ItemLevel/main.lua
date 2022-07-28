@@ -25,7 +25,6 @@
 --]]
 -- Retrive addon folder name, and our local, private namespace.
 local Addon, Private = ...
-local DEBUG = false
 
 -- Lua API
 local _G = _G
@@ -119,21 +118,10 @@ local Update = function(self, bag, slot)
 				rarity = itemQuality
 			end
 
-		else
-			if (DEBUG) then
-				Private:Print("..."..bag..","..slot..": No gear in slot")
-			end
-		end
-	else
-		if (DEBUG) then
-			Private:Print("..."..bag..","..slot..": No Link (empty)")
 		end
 	end
 
 	if (message) then
-		if (DEBUG) then
-			Private:Print("..."..bag..","..slot..": "..message)
-		end
 
 		-- Retrieve or create the button's info container.
 		local container = Cache[self]
@@ -170,42 +158,22 @@ local Update = function(self, bag, slot)
 
 end
 
--- Clear an itembutton's itemlevel
-local Clear = function(self)
-	if (Cache[self]) then
-		Cache[self].ilvl:SetText("")
-	end
-end
-
 -- Parse a container
 local UpdateContainer = function(self)
-	if (DEBUG) then
-		Private:Print(":UpdateContainer() started")
-	end
 	local bag = self:GetID()
 	local name = self:GetName()
-	if (DEBUG) then
-		Private:Print("...BagName", name)
-		Private:Print("...BagID:", bag)
-	end
-	local items, empty = 0,0
 	local id = 1
 	local button = _G[name.."Item"..id]
 	while (button) do
 		if (button.hasItem) then
-			items = items + 1
 			Update(button, bag, button:GetID())
 		else
-			empty = empty + 1
-			Clear(button)
+			if (Cache[button]) then
+				Cache[button].ilvl:SetText("")
+			end
 		end
 		id = id + 1
 		button = _G[name.."Item"..id]
-	end
-	if (DEBUG) then
-		Private:Print("...items:", items)
-		Private:Print("...empty:", empty)
-		Private:Print(":UpdateContainer() finished")
 	end
 end
 
@@ -213,31 +181,19 @@ end
 
 -- Parse the main bankframe
 local UpdateBank = function()
-	if (DEBUG) then
-		Private:Print(":UpdateBank() started")
-	end
 	local BankSlotsFrame = BankSlotsFrame
 	local bag = BankSlotsFrame:GetID()
-	local items, empty, other = 0,0,0
 	for id = 1, NUM_BANKGENERIC_SLOTS do
 		local button = BankSlotsFrame["Item"..id]
 		if (button and not button.isBag) then
 			if (button.hasItem) then
-				items = items + 1
 				Update(button, bag, button:GetID())
 			else
-				empty = empty + 1
-				Clear(button)
+				if (Cache[button]) then
+					Cache[button].ilvl:SetText("")
+				end
 			end
-		else
-			other = other + 1
 		end
-	end
-	if (DEBUG) then
-		Private:Print("...items:", items)
-		Private:Print("...empty:", empty)
-		Private:Print("...other:", other)
-		Private:Print(":UpdateBank() finished")
 	end
 end
 
@@ -322,9 +278,6 @@ end
 	local version = "@project-version@"
 	if (version:find("project%-version")) then
 		version = "Development"
-	else
-		-- Forcefully disable debugging on non-git versions.
-		DEBUG = false
 	end
 
 	-- WoW Client versions
