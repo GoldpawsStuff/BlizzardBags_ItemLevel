@@ -4,5 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.2-Release] 2022-07-28
+### Changed
+- Fixed the slightly faulty TOC addon description.
+- Tweaked the performance slightly by removing some redundant function calls.
+
+### Removed
+- Removed no longer needed debug code to keep the performance as high as possible.
+
 ## [1.0.1-Release] 2022-07-27
 - Initial commit.
