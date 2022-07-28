@@ -152,8 +152,11 @@ local Update = function(self, bag, slot)
 		container.ilvl:SetTextColor(r, g, b)
 		container.ilvl:SetText(message)
 
-	elseif (Cache[self]) then
-		Cache[self].ilvl:SetText("")
+	else
+		local cache = Cache[self]
+		if (cache and cache.ilvl) then
+			cache.ilvl:SetText("")
+		end
 	end
 
 end
@@ -168,8 +171,9 @@ local UpdateContainer = function(self)
 		if (button.hasItem) then
 			Update(button, bag, button:GetID())
 		else
-			if (Cache[button]) then
-				Cache[button].ilvl:SetText("")
+			local cache = Cache[button]
+			if (cache and cache.ilvl) then
+				cache.ilvl:SetText("")
 			end
 		end
 		id = id + 1
@@ -189,8 +193,9 @@ local UpdateBank = function()
 			if (button.hasItem) then
 				Update(button, bag, button:GetID())
 			else
-				if (Cache[button]) then
-					Cache[button].ilvl:SetText("")
+				local cache = Cache[button]
+				if (cache and cache.ilvl) then
+					cache.ilvl:SetText("")
 				end
 			end
 		end
