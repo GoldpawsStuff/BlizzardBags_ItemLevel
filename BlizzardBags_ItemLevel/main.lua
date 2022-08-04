@@ -142,6 +142,13 @@ local Update = function(self, bag, slot)
 			container.ilvl:SetShadowColor(0, 0, 0, .5)
 		end
 
+		-- Move conflicting upgrade icons
+		local upgrade = self.UpgradeIcon
+		if (upgrade) then
+			upgrade:ClearAllPoints()
+			upgrade:SetPoint("BOTTOMRIGHT", 2, 0)
+		end
+
 		-- Colorize.
 		if (rarity and colors[rarity]) then
 			local col = colors[rarity]
