@@ -84,7 +84,30 @@ local Update = function(self, bag, slot)
 	if (itemLink) then
 		local _, _, itemQuality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
 
-		if (itemQuality and itemQuality > 0 and itemEquipLoc and _G[itemEquipLoc]) then
+		-- Display container slots of equipped bags.
+		if (itemEquipLoc == "INVTYPE_BAG") then
+
+			Scanner.owner = self
+			Scanner.bag = bag
+			Scanner.slot = slot
+			Scanner:SetOwner(self, "ANCHOR_NONE")
+			Scanner:SetBagItem(bag,slot)
+
+			for i = 3,4 do
+				local line = _G[_SCANNER.."TextLeft"..i]
+				if (line) then
+					local msg = line:GetText()
+					if (msg) and (string_find(msg, S_SLOTS)) then
+						local bagSlots = string_match(msg, S_SLOTS)
+						if (bagSlots) and (tonumber(bagSlots) > 0) then
+							message = bagSlots
+						end
+						break
+					end
+				end
+			end
+
+		elseif (itemQuality and itemQuality > 0 and itemEquipLoc and _G[itemEquipLoc]) then
 
 			Scanner.owner = self
 			Scanner.bag = bag
