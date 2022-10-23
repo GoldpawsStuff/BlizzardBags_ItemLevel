@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.9-Release] 2022-10-23
+### Fixed
+- Updated the API used in Dragonflight.
+
 ## [1.0.8-Release] 2022-10-06
 ### Changed
 - Now shows the total number of slots instead of item level on containers.

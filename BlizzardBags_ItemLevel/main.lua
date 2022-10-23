@@ -39,6 +39,9 @@ local GetContainerItemInfo = GetContainerItemInfo
 local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetItemInfo = GetItemInfo
 
+-- WoW10 API
+local C_Container_GetContainerItemInfo = C_Container and C_Container.GetContainerItemInfo
+
 -- WoW Objects
 local CFSM = ContainerFrameSettingsManager -- >= 10.0.0
 local CFCB = ContainerFrameCombinedBags -- >= 10.0.0
@@ -78,9 +81,16 @@ local colors = {
 -----------------------------------------------------------
 -- Update an itembutton's itemlevel
 local Update = function(self, bag, slot)
-	local message, rarity
+	local message, rarity, itemLink, _
 	local r, g, b = 240/255, 240/255, 240/255
-	local _, _, _, _, _, _, itemLink = GetContainerItemInfo(bag,slot)
+	if (C_Container_GetContainerItemInfo) then
+		local containerInfo = C_Container_GetContainerItemInfo(bag,slot)
+		if (containerInfo) then
+			itemLink = containerInfo.hyperlink
+		end
+	else
+		_, _, _, _, _, _, itemLink = GetContainerItemInfo(bag,slot)
+	end
 	if (itemLink) then
 		local _, _, itemQuality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
 
@@ -348,20 +358,12 @@ end
 	end
 
 	-- WoW Client versions
-	local currentClientPatch, currentClientBuild = GetBuildInfo()
-	currentClientBuild = tonumber(currentClientBuild)
-
-	local MAJOR,MINOR,PATCH = string.split(".", currentClientPatch)
-	MAJOR = tonumber(MAJOR)
-
-	Private.Version = version
-	Private.ClientMajor = MAJOR
-	Private.IsDragonflight = MAJOR == 10
+	local patch, build, date, version = GetBuildInfo()
 	Private.IsRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 	Private.IsClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-	Private.IsBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
+	Private.IsTBC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 	Private.IsWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
-	Private.CurrentClientBuild = currentClientBuild
+	Private.WoW10 = version >= 100000
 
 	-- Should mostly be used for debugging
 	Private.Print = function(self, ...)
