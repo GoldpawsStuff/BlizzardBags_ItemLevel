@@ -42,10 +42,6 @@ local GetItemInfo = GetItemInfo
 -- WoW10 API
 local C_Container_GetContainerItemInfo = C_Container and C_Container.GetContainerItemInfo
 
--- WoW Objects
-local CFSM = ContainerFrameSettingsManager -- >= 10.0.0
-local CFCB = ContainerFrameCombinedBags -- >= 10.0.0
-
 -- Tooltip used for scanning.
 -- Let's keep this name for all scanner addons.
 local _SCANNER = "GP_ScannerTooltip"
@@ -295,17 +291,6 @@ end
 -- and most data is available to the user.
 Private.OnEnable = function(self)
 
-	-- In 10.0.0 Blizzard switched to a template based system
-	-- for all backpack, bank- and bag buttons.
-	--
-	-- 	BaseContainerFrameMixin
-	-- 		BankFrameMixin 							(bank frame)
-	-- 		ContainerFrameMixin 					(all character- and bank bags) (has :Update())
-	--	 		ContainerFrameTokenWatcherMixin
-	--	 			ContainerFrameBackpackMixin 	(backpack)
-	--	 			ContainerFrameCombinedBagsMixin (all in one bag)
-
-
 	-- All the Classics
 	if (ContainerFrame_Update) then
 		hooksecurefunc("ContainerFrame_Update", UpdateContainer)
@@ -340,7 +325,6 @@ Private.OnEnable = function(self)
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 
 end
-
 
 -- Setup the environment
 -----------------------------------------------------------
