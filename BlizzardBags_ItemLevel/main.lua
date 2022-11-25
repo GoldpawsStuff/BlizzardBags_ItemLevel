@@ -28,6 +28,7 @@ local Addon, Private = ...
 
 -- Lua API
 local _G = _G
+local ipairs = ipairs
 local string_find = string.find
 local string_gsub = string.gsub
 local string_match = string.match
@@ -93,47 +94,107 @@ local Update = function(self, bag, slot)
 		-- Display container slots of equipped bags.
 		if (itemEquipLoc == "INVTYPE_BAG") then
 
-			Scanner.owner = self
-			Scanner.bag = bag
-			Scanner.slot = slot
-			Scanner:SetOwner(self, "ANCHOR_NONE")
-			Scanner:SetBagItem(bag,slot)
+			if (Private.IsRetail) then
 
-			for i = 3,4 do
-				local line = _G[_SCANNER.."TextLeft"..i]
-				if (line) then
-					local msg = line:GetText()
-					if (msg) and (string_find(msg, S_SLOTS)) then
-						local bagSlots = string_match(msg, S_SLOTS)
-						if (bagSlots) and (tonumber(bagSlots) > 0) then
-							message = bagSlots
+				local tooltipData = C_TooltipInfo.GetBagItem(bag, slot)
+
+				-- Assign data to 'type' and 'guid' fields.
+				TooltipUtil.SurfaceArgs(tooltipData)
+
+				-- Assign data to 'leftText' fields.
+				for _, line in ipairs(tooltipData.lines) do
+					TooltipUtil.SurfaceArgs(line)
+				end
+
+				for i = 3,4 do
+					local msg = tooltipData.lines[i].leftText
+					if (not msg) then break end
+
+					local numslots = string_match(msg, S_SLOTS)
+					if (numslots) then
+						numslots = tonumber(numslots)
+						if (numslots > 0) then
+							message = numslots
 						end
 						break
+					end
+				end
+
+			else
+				Scanner.owner = self
+				Scanner.bag = bag
+				Scanner.slot = slot
+				Scanner:SetOwner(self, "ANCHOR_NONE")
+				Scanner:SetBagItem(bag,slot)
+
+				for i = 3,4 do
+					local line = _G[_SCANNER.."TextLeft"..i]
+					if (line) then
+						local msg = line:GetText()
+						if (msg) and (string_find(msg, S_SLOTS)) then
+							local bagSlots = string_match(msg, S_SLOTS)
+							if (bagSlots) and (tonumber(bagSlots) > 0) then
+								message = bagSlots
+							end
+							break
+						end
 					end
 				end
 			end
 
+
 		elseif (itemQuality and itemQuality > 0 and itemEquipLoc and _G[itemEquipLoc]) then
 
-			Scanner.owner = self
-			Scanner.bag = bag
-			Scanner.slot = slot
-			Scanner:SetOwner(self, "ANCHOR_NONE")
-			Scanner:SetBagItem(bag,slot)
-
 			local tipLevel
-			for i = 2,3 do
-				local line = _G[_SCANNER.."TextLeft"..i]
-				if (line) then
-					local msg = line:GetText()
-					if (msg) and (string_find(msg, S_ILVL)) then
-						local ilvl = (string_match(msg, S_ILVL))
-						if (ilvl) and (tonumber(ilvl) > 0) then
-							tipLevel = ilvl
+
+			if (Private.IsRetail) then
+
+				local tooltipData = C_TooltipInfo.GetBagItem(bag, slot)
+
+				-- Assign data to 'type' and 'guid' fields.
+				TooltipUtil.SurfaceArgs(tooltipData)
+
+				-- Assign data to 'leftText' fields.
+				for _, line in ipairs(tooltipData.lines) do
+					TooltipUtil.SurfaceArgs(line)
+				end
+
+				for i = 2,3 do
+					local msg = tooltipData.lines[i].leftText
+					if (not msg) then break end
+
+					local itemlevel = string_match(msg, S_ILVL)
+					if (itemlevel) then
+						itemlevel = tonumber(itemlevel)
+						if (itemlevel > 0) then
+							tipLevel = itemlevel
 						end
 						break
 					end
 				end
+
+			else
+
+				Scanner.owner = self
+				Scanner.bag = bag
+				Scanner.slot = slot
+				Scanner:SetOwner(self, "ANCHOR_NONE")
+				Scanner:SetBagItem(bag,slot)
+
+				for i = 2,3 do
+					local line = _G[_SCANNER.."TextLeft"..i]
+					if (line) then
+						local msg = line:GetText()
+						if (msg) and (string_find(msg, S_ILVL)) then
+							local ilvl = (string_match(msg, S_ILVL))
+							if (ilvl) and (tonumber(ilvl) > 0) then
+								tipLevel = ilvl
+							end
+							break
+						end
+					end
+				end
+
 			end
 
 			-- Set a threshold to avoid spamming the classics with ilvl 1 whities
