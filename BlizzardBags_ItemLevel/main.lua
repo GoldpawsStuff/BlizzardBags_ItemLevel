@@ -107,7 +107,7 @@ local Update = function(self, bag, slot)
 				end
 
 				for i = 3,4 do
-					local msg = tooltipData.lines[i].leftText
+					local msg = tooltipData.lines[i] and tooltipData.lines[i].leftText
 					if (not msg) then break end
 
 					local numslots = string_match(msg, S_SLOTS)
@@ -160,7 +160,7 @@ local Update = function(self, bag, slot)
 				end
 
 				for i = 2,3 do
-					local msg = tooltipData.lines[i].leftText
+					local msg = tooltipData.lines[i] and tooltipData.lines[i].leftText
 					if (not msg) then break end
 
 					local itemlevel = string_match(msg, S_ILVL)
