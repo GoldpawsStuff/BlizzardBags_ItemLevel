@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.16-Release] 2023-01-18
+- Updated for WoW 3.4.1.
+
 ## [1.0.15-Release] 2022-12-08
 ### Fixed
 - Fixed an issue where items relying on tooltipData sometimes would bug out in retail.
