@@ -276,14 +276,28 @@ end
 
 -- Parse combined container
 local UpdateCombinedContainer = function(self)
-	for id,button in self:EnumerateItems() do
-		if (button.hasItem) then
-			-- The buttons retain their original bagID
-			Update(button, button:GetBagID(), button:GetID())
-		else
-			local cache = Cache[button]
-			if (cache and cache.ilvl) then
-				cache.ilvl:SetText("")
+	if (self.EnumerateValidItems) then
+		for id,button in self:EnumerateValidItems() do
+			if (button.hasItem) then
+				-- The buttons retain their original bagID
+				Update(button, button:GetBagID(), button:GetID())
+			else
+				local cache = Cache[button]
+				if (cache and cache.ilvl) then
+					cache.ilvl:SetText("")
+				end
+			end
+		end
+	elseif (self.Items) then
+		for id,button in ipairs(self.Items) do
+			if (button.hasItem) then
+				-- The buttons retain their original bagID
+				Update(button, button:GetBagID(), button:GetID())
+			else
+				local cache = Cache[button]
+				if (cache and cache.ilvl) then
+					cache.ilvl:SetText("")
+				end
 			end
 		end
 	end
