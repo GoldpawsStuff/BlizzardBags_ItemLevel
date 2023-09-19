@@ -11,4 +11,10 @@
 ## X-Wago-ID: qv63bnNb
 ## X-License: Custom
 
+## OptionalDeps: TaintLess
+
+#@non-debug@
+Libs\TaintLess\TaintLess.xml
+#@end-non-debug@
+
 main.lua

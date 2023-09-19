@@ -1,6 +1,11 @@
 package-as: BlizzardBags_ItemLevel
 enable-nolib-creation: no
 
+externals:
+    Libs/TaintLess:
+        url: https://www.townlong-yak.com/addons.git/taintless
+        commit: default
+
 move-folders:
     BlizzardBags_ItemLevel/BlizzardBags_ItemLevel: BlizzardBags_ItemLevel
 
