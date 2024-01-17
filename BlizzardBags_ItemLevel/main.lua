@@ -97,26 +97,19 @@ local Update = function(self, bag, slot)
 			if (Private.IsRetail) then
 
 				local tooltipData = C_TooltipInfo.GetBagItem(bag, slot)
+				if (tooltipData) then
+					for i = 3,4 do
+						local msg = tooltipData.lines[i] and tooltipData.lines[i].leftText
+						if (not msg) then break end
 
-				-- Assign data to 'type' and 'guid' fields.
-				TooltipUtil.SurfaceArgs(tooltipData)
-
-				-- Assign data to 'leftText' fields.
-				for _, line in ipairs(tooltipData.lines) do
-					TooltipUtil.SurfaceArgs(line)
-				end
-
-				for i = 3,4 do
-					local msg = tooltipData.lines[i] and tooltipData.lines[i].leftText
-					if (not msg) then break end
-
-					local numslots = string_match(msg, S_SLOTS)
-					if (numslots) then
-						numslots = tonumber(numslots)
-						if (numslots > 0) then
-							message = numslots
+						local numslots = string_match(msg, S_SLOTS)
+						if (numslots) then
+							numslots = tonumber(numslots)
+							if (numslots > 0) then
+								message = numslots
+							end
+							break
 						end
-						break
 					end
 				end
 
@@ -150,26 +143,19 @@ local Update = function(self, bag, slot)
 			if (Private.IsRetail) then
 
 				local tooltipData = C_TooltipInfo.GetBagItem(bag, slot)
+				if (tooltipData) then
+					for i = 2,3 do
+						local msg = tooltipData.lines[i] and tooltipData.lines[i].leftText
+						if (not msg) then break end
 
-				-- Assign data to 'type' and 'guid' fields.
-				TooltipUtil.SurfaceArgs(tooltipData)
-
-				-- Assign data to 'leftText' fields.
-				for _, line in ipairs(tooltipData.lines) do
-					TooltipUtil.SurfaceArgs(line)
-				end
-
-				for i = 2,3 do
-					local msg = tooltipData.lines[i] and tooltipData.lines[i].leftText
-					if (not msg) then break end
-
-					local itemlevel = string_match(msg, S_ILVL)
-					if (itemlevel) then
-						itemlevel = tonumber(itemlevel)
-						if (itemlevel > 0) then
-							tipLevel = itemlevel
+						local itemlevel = string_match(msg, S_ILVL)
+						if (itemlevel) then
+							itemlevel = tonumber(itemlevel)
+							if (itemlevel > 0) then
+								tipLevel = itemlevel
+							end
+							break
 						end
-						break
 					end
 				end
 
