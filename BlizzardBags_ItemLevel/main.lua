@@ -136,7 +136,7 @@ local Update = function(self, bag, slot)
 			end
 
 
-		elseif (itemQuality and itemQuality > 0 and itemEquipLoc and _G[itemEquipLoc]) then
+		elseif (itemQuality and itemQuality > 0 and itemEquipLoc and _G[itemEquipLoc] ~= "") then
 
 			local tipLevel
 
