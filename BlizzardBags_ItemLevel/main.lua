@@ -38,7 +38,7 @@ local tonumber = tonumber
 local CreateFrame = CreateFrame
 local GetContainerItemInfo = GetContainerItemInfo
 local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
-local GetItemInfo = GetItemInfo
+local GetItemInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
 
 -- WoW10 API
 local C_Container_GetContainerItemInfo = C_Container and C_Container.GetContainerItemInfo
@@ -136,7 +136,7 @@ local Update = function(self, bag, slot)
 			end
 
 
-		elseif (itemQuality and itemQuality > 0 and itemEquipLoc and _G[itemEquipLoc]) then
+		elseif (itemQuality and itemQuality > 0 and itemEquipLoc and _G[itemEquipLoc] and itemEquipLoc ~= "INVTYPE_NON_EQUIP" and itemEquipLoc ~= "INVTYPE_NON_EQUIP_IGNORE" and itemEquipLoc ~= "INVTYPE_TABARD" and itemEquipLoc ~= "INVTYPE_AMMO" and itemEquipLoc ~= "INVTYPE_QUIVER") then
 
 			local tipLevel
 
@@ -193,7 +193,7 @@ local Update = function(self, bag, slot)
 		end
 	end
 
-	if (message) then
+	if (message and message > 1) then
 
 		-- Retrieve or create the button's info container.
 		local container = Cache[self]
@@ -398,12 +398,25 @@ end
 	end
 
 	-- WoW Client versions
-	local patch, build, date, version = GetBuildInfo()
+	local patch, build, date, tocversion = GetBuildInfo()
+	local major, minor, micro = string.split(".", patch)
+
+	-- Simple flags for client version checks
 	Private.IsRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 	Private.IsClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 	Private.IsTBC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 	Private.IsWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
-	Private.WoW10 = version >= 100000
+	--Private.IsCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99) -- NYI in first build
+	Private.IsCata = (tocversion >= 40400) and (tocversion < 50000)
+	Private.WoW10 = tocversion >= 100000
+
+	Private.ClientVersion = tocversion
+	Private.ClientDate = date
+	Private.ClientPatch = patch
+	Private.ClientMajor = tonumber(major)
+	Private.ClientMinor = tonumber(minor)
+	Private.ClientMicro = tonumber(micro)
+	Private.ClientBuild = tonumber(build)
 
 	-- Should mostly be used for debugging
 	Private.Print = function(self, ...)
