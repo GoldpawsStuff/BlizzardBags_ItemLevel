@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.36-Release] 2024-07-10
+- Updated for WoW Retail Client Patch 10.2.7.
+- Updated for WoW Classic Era Client Patch 1.15.3.
+
 ## [1.0.35-Release] 2024-04-25
 ### Fixed
 - The issue that caused all item levels to show instead of just those of equipable gear has been fixed.
